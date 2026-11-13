@@ -1,24 +1,55 @@
 <!DOCTYPE html>
-<html lang="sl" class="light">
+<html lang="sl" class="dark overflow-x-clip" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dvojček — Slovenska dvojina & prevajalnik</title>
+  <meta name="description" content="Slovenski generator dvojine, slovnice in pregibov z zvočno izgovorjavo in interaktivnimi vajami.">
+  <title>Dvojček (Slovenska dvojina in prevajalnik)</title>
   <link rel="icon" type="image/jpeg" href="/mascot.jpg">
   
+  <script>
+    if (localStorage.theme === 'light') {
+      document.documentElement.classList.remove('dark');
+      document.documentElement.setAttribute('data-theme', 'light');
+    } else {
+      document.documentElement.classList.add('dark');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  </script>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700&family=Wix+Madefor+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
+          colors: {
+            dusk: {
+              paper: '#fafafa',
+              dark: '#0e0f12',
+              card: '#121215',
+              surface: '#121316',
+              muted: '#71717a'
+            },
+            matcha: {
+              DEFAULT: '#2f855a',
+              dark: '#1c5236',
+              light: '#48bb78',
+              soft: '#e6f4ea'
+            },
+            hojicha: {
+              DEFAULT: '#d97706',
+              soft: '#fef3c7'
+            }
+          },
           fontFamily: { 
-            sans: ['"Inter"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            display: ['"Wix Madefor Display"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            sans: ['"Wix Madefor Text"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
             mono: ['"JetBrains Mono"', 'monospace']
           }
         }
@@ -26,47 +57,366 @@
     }
   </script>
   <style>
+/* Hallmark: dusk / sado-waza / wix-madefor-display / modern-minimal */
+    :root {
+      --color-paper: oklch(98.5% 0.005 85);
+      --color-paper-2: oklch(96% 0.008 85);
+      --color-paper-3: oklch(92% 0.010 85);
+      --color-ink: oklch(20% 0.015 268);
+      --color-ink-2: oklch(35% 0.018 268);
+      --color-muted: oklch(50% 0.018 265);
+      --color-rule: oklch(88% 0.010 85);
+      --color-light: oklch(99.2% 0.004 85);
+      --color-shade: oklch(15% 0.022 268);
+      --color-matcha: #2f855a;
+      --color-matcha-dark: #1c5236;
+      --color-matcha-light: #48bb78;
+      --color-matcha-soft: #e6f4ea;
+      --color-apricot: #d97706;
+      --color-apricot-soft: #fef3c7;
+      --glass: rgba(255, 255, 255, 0.75);
+      --glass-blur: 16px;
+      --glass-hi: inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+      --shadow-card: 0 1px 2px 0 rgba(0, 0, 0, 0.05), 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+      --font-display: "Wix Madefor Display", ui-sans-serif, system-ui, sans-serif;
+      --font-body: "Wix Madefor Text", ui-sans-serif, system-ui, sans-serif;
+      --radius-card: 16px;
+      --radius-pill: 999px;
+      --tracking-display: -0.022em;
+      --color-scroll-thumb: oklch(85% 0.010 262);
+      --color-audio-bg: oklch(96% 0.008 85);
+      --color-audio-border: oklch(50% 0.018 265);
+      --color-audio-text: oklch(20% 0.015 268);
+      --color-token-active-bg: oklch(20% 0.015 268);
+      --color-token-active-text: oklch(98.5% 0.005 85);
+      --color-btn-neutral-bg: oklch(99.2% 0.004 85);
+      --color-btn-neutral-border: oklch(88% 0.010 85);
+      --color-btn-neutral-border-b: oklch(80% 0.010 85);
+      --color-err-border: oklch(62% 0.22 25);
+      --color-err-bg: oklch(96% 0.04 25);
+      --color-err-text: oklch(48% 0.22 25);
+      --color-err-bevel: oklch(52% 0.22 25);
+    }
+
+    :root[data-theme="dark"] {
+      --color-paper: oklch(17.5% 0.014 268);
+      --color-paper-2: oklch(21% 0.016 268);
+      --color-paper-3: oklch(25% 0.017 268);
+      --color-ink: oklch(96% 0.006 75);
+      --color-ink-2: oklch(85% 0.010 262);
+      --color-muted: oklch(70% 0.016 262);
+      --color-rule: oklch(30% 0.016 266);
+      --color-light: oklch(99.2% 0.004 85);
+      --color-shade: oklch(10% 0.022 268);
+      --color-matcha: #38a169;
+      --color-matcha-dark: #22543d;
+      --color-matcha-light: #68d391;
+      --color-matcha-soft: rgba(47, 133, 90, 0.2);
+      --color-apricot: #f59e0b;
+      --color-apricot-soft: rgba(217, 119, 6, 0.2);
+      --glass: rgba(22, 23, 28, 0.75);
+      --glass-blur: 20px;
+      --glass-hi: inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+      --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 30px 60px -20px rgba(0, 0, 0, 0.7);
+      --color-scroll-thumb: oklch(35% 0.018 268);
+      --color-audio-bg: oklch(25% 0.017 268);
+      --color-audio-border: oklch(70% 0.016 262);
+      --color-audio-text: oklch(96% 0.006 75);
+      --color-token-active-bg: oklch(96% 0.006 75);
+      --color-token-active-text: oklch(20% 0.015 268);
+      --color-btn-neutral-bg: oklch(20% 0.015 268);
+      --color-btn-neutral-border: oklch(30% 0.016 266);
+      --color-btn-neutral-border-b: oklch(36% 0.018 268);
+      --color-err-border: oklch(65% 0.22 25);
+      --color-err-bg: oklch(24% 0.08 25);
+      --color-err-text: oklch(75% 0.16 25);
+      --color-err-bevel: oklch(42% 0.22 25);
+    }
+
+    html, body {
+      overflow-x: clip;
+      font-family: var(--font-body);
+    }
+
+    h1, h2, h3, .font-display {
+      font-family: var(--font-display);
+      letter-spacing: var(--tracking-display);
+      text-wrap: balance;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--color-matcha);
+      outline-offset: 2px;
+    }
+
+    button:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 3px; }
-    .dark ::-webkit-scrollbar-thumb { background: #3f3f46; }
+    ::-webkit-scrollbar-thumb { background: var(--color-scroll-thumb); border-radius: 3px; }
     
     .playing-audio { 
-      background-color: #f4f4f5 !important; 
-      border-color: #71717a !important; 
-      color: #18181b !important; 
-    }
-    .dark .playing-audio { 
-      background-color: #27272a !important; 
-      border-color: #a1a1aa !important; 
-      color: #fafafa !important; 
+      background-color: var(--color-audio-bg) !important; 
+      border-color: var(--color-audio-border) !important; 
+      color: var(--color-audio-text) !important; 
     }
     
     .word-token-active { 
-      background-color: #18181b !important; 
-      color: #fafafa !important; 
-      border-color: #18181b !important; 
+      background-color: var(--color-token-active-bg) !important; 
+      color: var(--color-token-active-text) !important; 
+      border-color: var(--color-token-active-bg) !important; 
     }
-    .dark .word-token-active { 
-      background-color: #fafafa !important; 
-      color: #18181b !important; 
-      border-color: #fafafa !important; 
+
+    /* Tactile 3D Buttons (Duolingo & Sado Waza craft) */
+    .btn-3d-matcha, .btn-duo-primary {
+      background-color: var(--color-matcha);
+      color: var(--color-light);
+      border: 2px solid var(--color-matcha);
+      border-bottom: 4px solid var(--color-matcha-dark);
+      border-radius: 16px;
+      transition: transform 90ms ease, border-bottom-width 90ms ease, filter 90ms ease;
+      cursor: pointer;
+    }
+    .btn-3d-matcha:hover, .btn-duo-primary:hover {
+      filter: brightness(1.06);
+      transform: translateY(-2px);
+      border-bottom-width: 6px;
+    }
+    .btn-3d-matcha:active, .btn-duo-primary:active {
+      transform: translateY(3px);
+      border-bottom-width: 1px;
+    }
+
+    .btn-3d-neutral {
+      background-color: var(--color-btn-neutral-bg);
+      border: 1px solid var(--color-btn-neutral-border);
+      border-bottom: 3px solid var(--color-btn-neutral-border-b);
+      transition: transform 100ms ease, border-bottom-width 100ms ease, background-color 100ms ease;
+    }
+    .btn-3d-neutral:hover {
+      filter: brightness(0.97);
+    }
+    [data-theme="dark"] .btn-3d-neutral:hover, .dark .btn-3d-neutral:hover {
+      filter: brightness(1.15);
+    }
+    .btn-3d-neutral:active {
+      transform: translateY(2px);
+      border-bottom-width: 1px;
+    }
+
+    /* Duolingo Chunky 3D Matching Tile */
+    .btn-duo-tile {
+      background-color: var(--color-btn-neutral-bg);
+      border: 2px solid var(--color-btn-neutral-border);
+      border-bottom: 4px solid var(--color-btn-neutral-border-b);
+      border-radius: 16px;
+      padding: 0.85rem 1rem;
+      font-weight: 500;
+      transition: transform 90ms ease, border-bottom-width 90ms ease, background-color 120ms ease, border-color 120ms ease;
+      cursor: pointer;
+      user-select: none;
+      text-align: left;
+    }
+    .btn-duo-tile:hover:not(:disabled) {
+      transform: translateY(-2px);
+      border-bottom-width: 6px;
+      filter: brightness(1.03);
+    }
+    .btn-duo-tile:active:not(:disabled) {
+      transform: translateY(3px);
+      border-bottom-width: 1px;
+    }
+    .btn-duo-tile.is-selected {
+      border-color: var(--color-matcha);
+      background-color: var(--color-matcha-soft);
+      border-bottom: 4px solid var(--color-matcha-dark);
+      transform: translateY(-1px) scale(1.02);
+    }
+    .btn-duo-tile.is-matched {
+      animation: duoMatchPop 0.35s ease;
+      border-color: var(--color-matcha);
+      background-color: var(--color-matcha-soft);
+      border-bottom: 2px solid var(--color-matcha);
+      opacity: 0.55;
+      pointer-events: none;
+      transform: translateY(2px);
+    }
+    .btn-duo-tile.is-mismatched {
+      animation: duoMismatchShake 0.45s ease;
+      border-color: var(--color-err-border) !important;
+      background-color: var(--color-err-bg) !important;
+      color: var(--color-err-text) !important;
+      border-bottom: 4px solid var(--color-err-bevel) !important;
+    }
+
+    /* Duolingo-Grade Character Animations */
+    @keyframes duoMascotIdle {
+      0%, 100% {
+        transform: translateY(0) scale(1, 1);
+      }
+      35% {
+        transform: translateY(3px) scale(1.05, 0.95);
+      }
+      70% {
+        transform: translateY(-8px) scale(0.96, 1.05) rotate(1.5deg);
+      }
+    }
+
+    @keyframes duoMascotCheer {
+      0% {
+        transform: translateY(0) scale(1, 1);
+      }
+      15% {
+        transform: translateY(8px) scale(1.18, 0.82);
+      }
+      45% {
+        transform: translateY(-28px) scale(0.9, 1.15) rotate(-8deg);
+      }
+      65% {
+        transform: translateY(-8px) scale(1.06, 0.94) rotate(6deg);
+      }
+      82% {
+        transform: translateY(-1px) scale(0.96, 1.04);
+      }
+      100% {
+        transform: translateY(0) scale(1, 1);
+      }
+    }
+
+    @keyframes duoMascotSad {
+      0% {
+        transform: translateY(0) rotate(0deg) scale(1);
+      }
+      20% {
+        transform: translateY(6px) scale(0.95, 0.92) rotate(-12deg);
+      }
+      45% {
+        transform: translateY(4px) scale(0.93, 0.95) rotate(10deg);
+      }
+      70% {
+        transform: translateY(2px) scale(0.96) rotate(-5deg);
+      }
+      100% {
+        transform: translateY(0) rotate(0deg) scale(1);
+      }
+    }
+
+    @keyframes duoMatchPop {
+      0% { transform: scale(1); }
+      35% { transform: scale(1.1); filter: brightness(1.1); }
+      70% { transform: scale(0.97); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes duoMismatchShake {
+      0%, 100% { transform: translateX(0); }
+      15% { transform: translateX(-9px) rotate(-1.5deg); }
+      30% { transform: translateX(9px) rotate(1.5deg); }
+      50% { transform: translateX(-6px); }
+      70% { transform: translateX(6px); }
+      85% { transform: translateX(-2px); }
+    }
+
+    @keyframes duoSparkleRise {
+      0% { opacity: 0; transform: translateY(6px) scale(0.5); }
+      50% { opacity: 1; transform: translateY(-12px) scale(1.2); }
+      100% { opacity: 0; transform: translateY(-24px) scale(0.8); }
+    }
+
+    @keyframes duoPulseHalo {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.18); opacity: 0.15; }
+    }
+
+    .mascot-idle {
+      animation: duoMascotIdle 3.2s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+    .mascot-celebrate {
+      animation: duoMascotCheer 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform-origin: bottom center;
+    }
+    .mascot-wobble {
+      animation: duoMascotSad 0.6s ease-in-out;
+      transform-origin: bottom center;
+    }
+    .shake-error {
+      animation: duoMismatchShake 0.45s ease-in-out;
+    }
+    .sparkle-burst {
+      animation: duoSparkleRise 0.6s ease-out forwards;
+    }
+    .pulse-halo {
+      animation: duoPulseHalo 2s ease-in-out infinite;
+    }
+
+    /* Hallmark Dusk Smoked Glass Panel */
+    .glass-panel {
+      background-color: var(--color-paper-2);
+      color: var(--color-ink);
+      border-radius: var(--radius-card);
+      box-shadow: var(--glass-hi), var(--shadow-card);
+    }
+
+    /* Duolingo Character Speech Bubble */
+    .duo-bubble {
+      position: relative;
+      background-color: var(--color-paper-2);
+      border: 2px solid var(--color-rule);
+      border-radius: var(--radius-card);
+      padding: 1rem;
+    }
+    .duo-bubble::before {
+      content: '';
+      position: absolute;
+      left: -8px;
+      bottom: 24px;
+      width: 14px;
+      height: 14px;
+      background-color: var(--color-paper-2);
+      border-left: 2px solid var(--color-rule);
+      border-bottom: 2px solid var(--color-rule);
+      transform: rotate(45deg);
+    }
+    @media (max-width: 639px) {
+      .duo-bubble::before {
+        left: 50%;
+        top: -8px;
+        bottom: auto;
+        transform: translateX(-50%) rotate(135deg);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .mascot-idle, .mascot-celebrate, .mascot-wobble, .shake-error, .sparkle-burst, .pulse-halo, .btn-3d-matcha, .btn-3d-neutral, .btn-duo-tile, .btn-duo-primary {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+      }
     }
   </style>
 </head>
-<body class="bg-[#FAFAFA] dark:bg-[#09090B] text-zinc-900 dark:text-zinc-100 min-h-screen antialiased transition-colors duration-150">
+<body class="bg-dusk-paper dark:bg-dusk-dark text-zinc-900 dark:text-zinc-100 min-h-screen antialiased overflow-x-clip">
 
   <!-- Header -->
-  <header class="bg-white dark:bg-[#121215] border-b border-zinc-200 dark:border-zinc-800 sticky top-0 z-40">
+  <header class="bg-white/90 dark:bg-dusk-surface/90 backdrop-blur-md border-b border-zinc-200/80 dark:border-zinc-800/80 sticky top-0 z-40">
     <div class="max-w-4xl mx-auto px-4 py-2.5 flex justify-between items-center">
-      <div class="flex items-center space-x-2.5 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-        <div class="w-8 h-8 rounded-full border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-emerald-50 dark:bg-emerald-950/40 flex-shrink-0 shadow-xs ring-1 ring-zinc-200/50 dark:ring-zinc-800">
+      <div class="flex items-center space-x-2.5 cursor-pointer" onclick="switchMainTab('explorer'); window.scrollTo({top: 0, behavior: 'smooth'})">
+        <div class="w-8 h-8 rounded-full border border-emerald-300 dark:border-emerald-800 overflow-hidden bg-emerald-50 dark:bg-emerald-950/40 flex-shrink-0 shadow-xs ring-1 ring-emerald-200/50 dark:ring-emerald-900/50 mascot-idle">
           <img src="/mascot.jpg" alt="Dvojček" class="w-full h-full object-cover scale-110 object-top" />
         </div>
         <div class="flex items-baseline gap-2">
           <h1 class="text-sm font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5" id="app-brand-name">
             Dvojček
-            <span class="text-[10px] font-normal px-1.5 py-0.2 rounded bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60 font-mono">zmajček</span>
+            <span class="text-[10px] font-normal px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60">zmajček</span>
           </h1>
           <span class="text-[11px] text-zinc-400 font-normal hidden sm:inline" id="header-subtitle">Generator dvojine & prevajalnik</span>
         </div>
@@ -91,11 +441,45 @@
     </div>
   </header>
 
+  <!-- Top Navigation Tab Strip (Hallmark Modern-Minimal) -->
+  <nav class="max-w-4xl mx-auto px-4 pt-4 pb-1 flex items-center justify-between gap-2 border-b border-zinc-200 dark:border-zinc-800" aria-label="Glavni zavihki">
+    <div class="flex items-center gap-1.5 sm:gap-2">
+      <button id="tab-btn-explorer" onclick="switchMainTab('explorer')" 
+        class="tab-btn active px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-2 bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 border border-transparent shadow-xs transition-colors">
+        <i class="fa-solid fa-book-open text-xs"></i>
+        <span>Slovar & Dvojina</span>
+      </button>
+
+      <button id="tab-btn-quiz" onclick="switchMainTab('quiz')" 
+        class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-2 bg-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800/60 border border-transparent transition-colors">
+        <i class="fa-solid fa-gamepad text-xs text-emerald-600 dark:text-emerald-400"></i>
+        <span>Vaje & Kviz</span>
+        <span id="quiz-streak-pill" class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/20 flex items-center gap-1"><i class="fa-solid fa-fire text-amber-500 text-[9px]"></i><span id="quiz-streak-count">0</span></span>
+      </button>
+
+      <button id="tab-btn-path" onclick="switchMainTab('path')" 
+        class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-2 bg-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800/60 border border-transparent transition-colors">
+        <i class="fa-solid fa-route text-xs text-sky-500"></i>
+        <span>Učna pot</span>
+        <span class="text-[10px] px-1.5 py-0.5 rounded bg-zinc-200/70 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400">Kmalu</span>
+      </button>
+    </div>
+
+    <!-- Quick Mastery Summary in Tab Strip -->
+    <div id="tab-strip-stats" class="hidden sm:flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400">
+      <span class="flex items-center gap-1 text-[11px]"><i class="fa-solid fa-star text-amber-500"></i> <span id="strip-mastered-count">0</span> osvojeno</span>
+      <span class="flex items-center gap-1 text-[11px]"><i class="fa-solid fa-bolt text-emerald-500"></i> <span id="strip-xp-count">0</span> XP</span>
+    </div>
+  </nav>
+
   <!-- Main Container -->
-  <main class="max-w-4xl mx-auto px-4 py-6 space-y-4">
+  <main class="max-w-4xl mx-auto px-4 py-5 space-y-4">
+    
+    <!-- TAB 1: Slovar & Dvojina (Explorer) -->
+    <div id="main-tab-explorer" class="space-y-4">
     
     <!-- Search / Command Panel -->
-    <section class="bg-white dark:bg-[#121215] p-4 sm:p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 space-y-3.5">
+    <section class="glass-panel p-5 rounded-3xl border border-zinc-200/90 dark:border-white/10 shadow-lg space-y-4">
       
       <!-- Direction Status Bar -->
       <div class="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/80 pb-2.5">
@@ -114,17 +498,17 @@
             <span>Slovenščina</span>
           </span>
         </div>
-        <span class="text-[11px] text-zinc-400 font-mono" id="dir-auto-tag">Samodejno zaznavanje</span>
+        <span class="text-[11px] text-zinc-400" id="dir-auto-tag">Samodejno zaznavanje</span>
       </div>
 
-      <div class="flex items-center gap-3.5 p-3 rounded-lg bg-zinc-50/80 dark:bg-zinc-900/60 border border-zinc-200/70 dark:border-zinc-800">
-        <div class="w-12 h-12 rounded-full overflow-hidden border border-emerald-300 dark:border-emerald-800/80 bg-emerald-50 dark:bg-emerald-950 flex-shrink-0 shadow-xs ring-1 ring-emerald-200/50 dark:ring-emerald-900/50">
+      <div class="flex items-center gap-3.5 p-3.5 rounded-2xl bg-zinc-50/80 dark:bg-zinc-900/60 border border-zinc-200/70 dark:border-zinc-800/80">
+        <div class="w-14 h-14 rounded-2xl overflow-hidden border-2 border-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 flex-shrink-0 shadow-sm mascot-idle cursor-pointer" onclick="pokeMascot()" title="Klikni zmajčka!">
           <img src="/mascot.jpg" alt="Dvojček" class="w-full h-full object-cover scale-110 object-top" />
         </div>
         <div class="flex-1 min-w-0 space-y-0.5">
           <div class="flex items-center gap-2 flex-wrap">
             <h2 class="text-sm font-semibold tracking-tight text-zinc-900 dark:text-zinc-100" id="search-title">Poišči besedo ali cel stavek</h2>
-            <span class="text-[10px] font-medium px-1.5 py-0.2 rounded bg-emerald-100/80 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800/70 font-mono">Dvojček pomočnik</span>
+            <span class="text-[10px] font-medium px-1.5 py-0.5 rounded bg-emerald-100/80 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800/70">Dvojček pomočnik</span>
           </div>
           <p class="text-xs text-zinc-500 dark:text-zinc-400" id="search-desc">
             Vpiši slovensko besedo, besedo v tvojem jeziku ali celoten stavek.
@@ -133,20 +517,20 @@
       </div>
 
       <!-- Search Input + Action -->
-      <div class="flex flex-col sm:flex-row gap-2">
+      <div class="flex flex-col sm:flex-row gap-2.5">
         <div class="relative flex-1">
-          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
+          <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400">
             <i class="fa-solid fa-magnifying-glass text-xs"></i>
           </div>
           <input type="text" id="word-input" 
-            class="block w-full pl-8 pr-8 py-2 bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800 rounded-md text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 focus:bg-white dark:focus:bg-zinc-900 transition-colors" 
+            class="block w-full pl-9 pr-8 py-2.5 bg-zinc-50 dark:bg-zinc-950/80 border-2 border-zinc-200 dark:border-zinc-800 rounded-xl text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-emerald-500 dark:focus:border-emerald-500 transition-colors shadow-inner" 
             placeholder="Vpiši besedo ali stavek..." autocomplete="off" onkeypress="handleEnter(event)">
-          <button id="clear-input-btn" onclick="clearInput()" class="hidden absolute inset-y-0 right-0 pr-2.5 flex items-center text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200">
+          <button id="clear-input-btn" onclick="clearInput()" class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200">
             <i class="fa-solid fa-xmark text-xs"></i>
           </button>
         </div>
         <button onclick="processInput()" id="analyze-btn"
-          class="bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 font-medium py-2 px-4 rounded-md text-xs sm:text-sm transition-colors flex items-center justify-center gap-1.5 whitespace-nowrap">
+          class="btn-3d-matcha py-2.5 px-6 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 whitespace-nowrap shadow-md">
           <span id="analyze-btn-text">Analiziraj</span>
           <i class="fa-solid fa-arrow-right text-[11px]"></i>
         </button>
@@ -184,12 +568,12 @@
 
     <!-- Sentence Results Section -->
     <section id="sentence-results-container" class="hidden space-y-4">
-      <div class="bg-white dark:bg-[#121215] p-4 sm:p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 space-y-3.5">
+      <div class="bg-white dark:bg-dusk-card p-4 sm:p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 space-y-3.5">
         
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-2.5 border-b border-zinc-100 dark:border-zinc-800">
           <div class="flex items-center gap-2">
-            <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500" id="sentence-badge-title">Prevod stavka</span>
-            <span id="sentence-detected-tag" class="font-mono text-[10px] font-semibold px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300"></span>
+            <span class="text-xs font-semibold text-zinc-500" id="sentence-badge-title">Prevod stavka</span>
+            <span id="sentence-detected-tag" class="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300"></span>
           </div>
 
           <div class="flex items-center gap-1.5">
@@ -209,12 +593,12 @@
 
         <!-- Translated Text + Inline Phonemic Pronunciation Guide -->
         <div class="space-y-0.5">
-          <div class="text-[11px] uppercase tracking-wider font-semibold text-zinc-400">Slovenščina</div>
+          <div class="text-[11px] font-semibold text-zinc-400">Slovenščina</div>
           <div class="flex items-baseline gap-2 flex-wrap">
             <div class="text-lg sm:text-xl font-semibold text-zinc-900 dark:text-zinc-100 leading-snug" id="sentence-sl-text">--</div>
             <span id="sentence-phonemic-respelling" class="font-mono text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 font-medium"></span>
             <span id="sentence-phonemic-ipa" class="font-mono text-xs sm:text-sm text-zinc-400 dark:text-zinc-500"></span>
-            <button onclick="openPhonemicModal()" class="inline-flex items-center gap-1 text-[10px] font-mono px-1.5 py-0.5 rounded border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors" title="Razlaga fonemskih oznak in naglasov">
+            <button onclick="openPhonemicModal()" class="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors" title="Razlaga fonemskih oznak in naglasov">
               <i class="fa-solid fa-circle-question text-[9px]"></i>
               <span>IPA</span>
             </button>
@@ -223,7 +607,7 @@
 
         <!-- Meaning -->
         <div class="p-3 bg-zinc-50 dark:bg-zinc-950/60 rounded-md border border-zinc-200 dark:border-zinc-800 space-y-0.5">
-          <div class="text-[11px] uppercase tracking-wider font-semibold text-zinc-400" id="sentence-meaning-label">Pomen / Prevod</div>
+          <div class="text-[11px] font-semibold text-zinc-400" id="sentence-meaning-label">Pomen / Prevod</div>
           <div class="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 font-medium" id="sentence-meaning-text">--</div>
         </div>
 
@@ -245,7 +629,7 @@
     <section id="verb-results-container" class="hidden space-y-4">
       
       <!-- Verb Header -->
-      <div class="bg-white dark:bg-[#121215] p-4 sm:p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+      <div class="bg-white dark:bg-dusk-card p-4 sm:p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <div>
           <div class="flex items-center gap-2 mb-1 flex-wrap">
             <span id="verb-detected-lang-tag" class="text-xs font-medium text-zinc-500"></span>
@@ -262,7 +646,7 @@
             <span id="verb-accent-tag" class="font-mono text-xs sm:text-sm text-zinc-400"></span>
             <span id="verb-phonemic-respelling" class="font-mono text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 font-medium" title="Fonemski zapis po zlogih"></span>
             <span id="verb-phonemic-ipa" class="font-mono text-xs sm:text-sm text-zinc-400 dark:text-zinc-500" title="Mednarodna fonetična abeceda (IPA)"></span>
-            <button onclick="openPhonemicModal()" class="inline-flex items-center gap-1 text-[10px] font-mono px-1.5 py-0.5 rounded border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors" title="Razlaga fonemskih oznak in naglasov">
+            <button onclick="openPhonemicModal()" class="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors" title="Razlaga fonemskih oznak in naglasov">
               <i class="fa-solid fa-circle-question text-[9px]"></i>
               <span>IPA</span>
             </button>
@@ -279,21 +663,21 @@
       </div>
 
       <!-- Core Dvojina Card (Clean Structured View) -->
-      <div class="bg-white dark:bg-[#121215] p-4 sm:p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 space-y-4">
+      <div class="bg-white dark:bg-dusk-card p-4 sm:p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 space-y-4">
         
         <div class="border-b border-zinc-100 dark:border-zinc-800 pb-2.5 flex items-center justify-between">
           <div class="flex items-center gap-2">
-            <span id="verb-dual-badge" class="font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 uppercase">Dvojina</span>
+            <span id="verb-dual-badge" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900">Dvojina</span>
             <h3 id="verb-dual-title" class="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100">
               Spreganje v dvojini glede na slovnično osebo
             </h3>
           </div>
-          <span id="verb-dual-sub" class="text-[11px] text-zinc-400 font-mono">Dual forms</span>
+          <span id="verb-dual-sub" class="text-[11px] text-zinc-400">Dual forms</span>
         </div>
 
         <!-- 1. Present Tense (Sedanjik) -->
         <div class="space-y-1.5">
-          <div id="verb-tense-sedanjik-title" class="text-xs font-semibold uppercase tracking-wider text-zinc-500">1. Present Tense (Sedanjik)</div>
+          <div id="verb-tense-sedanjik-title" class="text-xs font-semibold text-zinc-500">1. Present Tense (Sedanjik)</div>
           <ul class="divide-y divide-zinc-100 dark:divide-zinc-800/60 border border-zinc-200 dark:border-zinc-800 rounded-md" id="verb-sedanjik-list">
             <!-- Injected dynamically -->
           </ul>
@@ -302,7 +686,7 @@
         <!-- 2. Past Tense (Preteklik) -->
         <div class="space-y-1.5">
           <div>
-            <div id="verb-tense-preteklik-title" class="text-xs font-semibold uppercase tracking-wider text-zinc-500">2. Past Tense (Preteklik)</div>
+            <div id="verb-tense-preteklik-title" class="text-xs font-semibold text-zinc-500">2. Past Tense (Preteklik)</div>
             <p id="verb-tense-preteklik-sub" class="text-[11px] text-zinc-400 mt-0.5">
               Oblika se v dvojini spreminja glede na spol dveh oseb/stvari:
             </p>
@@ -314,7 +698,7 @@
 
         <!-- 3. Future Tense (Prihodnjik) -->
         <div class="space-y-1.5">
-          <div id="verb-tense-prihodnjik-title" class="text-xs font-semibold uppercase tracking-wider text-zinc-500">3. Future Tense (Prihodnjik)</div>
+          <div id="verb-tense-prihodnjik-title" class="text-xs font-semibold text-zinc-500">3. Future Tense (Prihodnjik)</div>
           <ul class="divide-y divide-zinc-100 dark:divide-zinc-800/60 border border-zinc-200 dark:border-zinc-800 rounded-md" id="verb-prihodnjik-list">
             <!-- Injected dynamically -->
           </ul>
@@ -323,7 +707,7 @@
       </div>
 
       <!-- Complete Conjugation Overview Table -->
-      <div class="bg-white dark:bg-[#121215] p-4 sm:p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 space-y-3">
+      <div class="bg-white dark:bg-dusk-card p-4 sm:p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 space-y-3">
         <div class="flex items-center justify-between">
           <h3 id="verb-table-title" class="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100">
             Preglednica vseh oblik (Sedanjik, Preteklik, Prihodnjik)
@@ -334,7 +718,11 @@
         <div class="overflow-x-auto border border-zinc-200 dark:border-zinc-800 rounded-md">
           <table class="w-full text-left border-collapse text-xs">
             <thead>
-              <tr class="bg-zinc-50 dark:bg-zinc-900/60 border-b border-zinc-200 dark:border-zinc-800 text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">
+              <tr class="bg-zinc-50 dark:bg-zinc-900/60 border-b border-zinc-200 dark:border-zinc-800 text-[11px] font-semibold text-zinc-500">
+                <th id="verb-th-person" class="p-2.5">Oseba</th>
+                <th id="verb-th-ednina" class="p-2.5">Ednina</th>
+                <th id="verb-th-dvojina" class="p-2.5 bg-zinc-100/60 dark:bg-zinc-800/40 text-zinc-900 dark:text-zinc-100 font-bold">Dvojina</th>
+                <th id="verb-th-mnozina" class="p-2.5">Množina</th>
                 <th id="verb-th-person" class="p-2.5">Oseba</th>
                 <th id="verb-th-ednina" class="p-2.5">Ednina</th>
                 <th id="verb-th-dvojina" class="p-2.5 bg-zinc-100/60 dark:bg-zinc-800/40 text-zinc-900 dark:text-zinc-100 font-bold">Dvojina</th>
@@ -354,7 +742,7 @@
     <section id="results-container" class="hidden space-y-4">
       
       <!-- Word Header & Meta -->
-      <div class="bg-white dark:bg-[#121215] p-4 sm:p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+      <div class="bg-white dark:bg-dusk-card p-4 sm:p-5 rounded-lg border border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <div>
           <div class="flex items-center gap-2 mb-1 flex-wrap">
             <span id="detected-lang-tag" class="text-xs font-medium text-zinc-500"></span>
@@ -371,7 +759,7 @@
             <span id="word-accent-tag" class="font-mono text-xs sm:text-sm text-zinc-400 font-serif" title="Naglas po SSKJ"></span>
             <span id="word-phonemic-respelling" class="font-mono text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 font-medium" title="Fonemski zapis po zlogih"></span>
             <span id="word-phonemic-ipa" class="font-mono text-xs sm:text-sm text-zinc-400 dark:text-zinc-500" title="Mednarodna fonetična abeceda (IPA)"></span>
-            <button onclick="openPhonemicModal()" class="inline-flex items-center gap-1 text-[10px] font-mono px-1.5 py-0.5 rounded border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors" title="Razlaga fonemskih oznak in naglasov">
+            <button onclick="openPhonemicModal()" class="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors" title="Razlaga fonemskih oznak in naglasov">
               <i class="fa-solid fa-circle-question text-[9px]"></i>
               <span>IPA</span>
             </button>
@@ -387,9 +775,9 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
         
         <!-- 1. Ednina Card -->
-        <div class="bg-white dark:bg-[#121215] rounded-lg p-4 border border-zinc-200 dark:border-zinc-800 flex flex-col justify-between">
+        <div class="bg-white dark:bg-dusk-card rounded-lg p-4 border border-zinc-200 dark:border-zinc-800 flex flex-col justify-between">
           <div class="flex justify-between items-start mb-3 gap-2">
-            <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500 min-w-0" id="card-ednina-title">
+            <span class="text-xs font-semibold text-zinc-500 min-w-0" id="card-ednina-title">
               1. Ednina
             </span>
             <button id="ednina-audio-btn" onclick="playAudioTrack('ednina', this)" title="Poslušaj izgovorjavo" 
@@ -406,9 +794,9 @@
         </div>
 
         <!-- 2. Dvojina Card (Architectural Accent: High Contrast Precision Border) -->
-        <div class="bg-white dark:bg-[#121215] rounded-lg p-4 border-2 border-zinc-900 dark:border-zinc-100 flex flex-col justify-between relative">
+        <div class="bg-white dark:bg-dusk-card rounded-lg p-4 border-2 border-zinc-900 dark:border-zinc-100 flex flex-col justify-between relative">
           <div class="flex justify-between items-start mb-3 gap-2">
-            <span class="text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5 min-w-0" id="card-dvojina-title">
+            <span class="text-xs font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5 min-w-0" id="card-dvojina-title">
               <span class="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-zinc-100 flex-shrink-0"></span>
               <span class="truncate">2. Dvojina</span>
             </span>
@@ -426,9 +814,9 @@
         </div>
 
         <!-- 3. Mnozina Card -->
-        <div class="bg-white dark:bg-[#121215] rounded-lg p-4 border border-zinc-200 dark:border-zinc-800 flex flex-col justify-between">
+        <div class="bg-white dark:bg-dusk-card rounded-lg p-4 border border-zinc-200 dark:border-zinc-800 flex flex-col justify-between">
           <div class="flex justify-between items-start mb-3 gap-2">
-            <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500 min-w-0" id="card-mnozina-title">
+            <span class="text-xs font-semibold text-zinc-500 min-w-0" id="card-mnozina-title">
               3. Množina
             </span>
             <button id="mnozina-audio-btn" onclick="playAudioTrack('mnozina', this)" title="Poslušaj izgovorjavo" 
@@ -446,7 +834,7 @@
       </div>
 
       <!-- Full Declension Table -->
-      <div class="bg-white dark:bg-[#121215] rounded-lg p-4 sm:p-5 border border-zinc-200 dark:border-zinc-800 space-y-3">
+      <div class="bg-white dark:bg-dusk-card rounded-lg p-4 sm:p-5 border border-zinc-200 dark:border-zinc-800 space-y-3">
         <div class="flex items-center justify-between">
           <h3 class="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100" id="declension-title">
             Sklanjatev (Vsi skloni)
@@ -457,7 +845,7 @@
         <div class="overflow-x-auto border border-zinc-200 dark:border-zinc-800 rounded-md">
           <table class="w-full text-left border-collapse text-xs">
             <thead>
-              <tr class="bg-zinc-50 dark:bg-zinc-900/60 border-b border-zinc-200 dark:border-zinc-800 text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">
+              <tr class="bg-zinc-50 dark:bg-zinc-900/60 border-b border-zinc-200 dark:border-zinc-800 text-[11px] font-semibold text-zinc-500">
                 <th class="p-2.5" id="th-case">Sklon</th>
                 <th class="p-2.5" id="th-ednina">Ednina</th>
                 <th class="p-2.5 bg-zinc-100/60 dark:bg-zinc-800/40 text-zinc-900 dark:text-zinc-100 font-bold" id="th-dvojina">Dvojina</th>
@@ -474,14 +862,14 @@
         <div class="p-3 bg-amber-50/60 dark:bg-amber-950/20 text-amber-900 dark:text-amber-200 rounded-md text-xs flex gap-2 border border-amber-200/50 dark:border-amber-900/40 items-start">
           <i class="fa-solid fa-circle-info text-amber-700 dark:text-amber-400 mt-0.5 text-xs"></i>
           <div>
-            <div class="font-semibold text-[11px] uppercase tracking-wider text-amber-800 dark:text-amber-300" id="grammar-tip-title">Slovnični napotek</div>
+            <div class="font-semibold text-[11px] text-amber-800 dark:text-amber-300" id="grammar-tip-title">Slovnični napotek</div>
             <p id="grammar-tip" class="text-xs text-amber-900/80 dark:text-amber-200/80 mt-0.5">Napotek za izbrano besedo.</p>
           </div>
         </div>
       </div>
 
       <!-- Interactive Dual Practice Card (Soft Diacritic Tolerance & Character Diff) -->
-      <div id="practice-card" class="bg-white dark:bg-[#121215] rounded-lg p-4 sm:p-5 border border-zinc-200 dark:border-zinc-800 space-y-3">
+      <div id="practice-card" class="bg-white dark:bg-dusk-card rounded-lg p-4 sm:p-5 border border-zinc-200 dark:border-zinc-800 space-y-3">
         <div class="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800 pb-2.5">
           <div class="flex items-center gap-2.5">
             <div class="w-8 h-8 rounded-full overflow-hidden border border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950 flex-shrink-0 shadow-xs ring-1 ring-emerald-200/50 dark:ring-emerald-900/50">
@@ -489,14 +877,14 @@
             </div>
             <div>
               <div class="flex items-center gap-1.5">
-                <span class="font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 uppercase" id="practice-badge">Vaja</span>
+                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700" id="practice-badge">Vaja</span>
                 <h3 class="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100" id="practice-title">
                   Vadi dvojino z Dvojčkom
                 </h3>
               </div>
             </div>
           </div>
-          <span class="text-[11px] text-zinc-400 font-mono hidden sm:inline" id="practice-hint">Preveri znanje dvojine</span>
+          <span class="text-[11px] text-zinc-400 hidden sm:inline" id="practice-hint">Preveri znanje dvojine</span>
         </div>
 
         <div class="space-y-2.5">
@@ -523,11 +911,341 @@
       </div>
 
     </section>
+    </div> <!-- /main-tab-explorer -->
+
+    <!-- TAB 2: Vaje & Kviz (Interactive Practice & Minigames) -->
+    <div id="main-tab-quiz" class="hidden space-y-5">
+      
+      <!-- Dragon Companion & Mastery HUD -->
+      <div class="glass-panel p-5 rounded-3xl border border-zinc-200/90 dark:border-white/10 shadow-lg space-y-5">
+        
+        <!-- Top row: Duolingo-Grade Animated Mascot Stage & Speech Bubble -->
+        <div class="flex flex-col sm:flex-row items-center sm:items-end gap-5">
+          <!-- Interactive Animated Dragon Mascot -->
+          <div class="relative flex-shrink-0 flex flex-col items-center">
+            <!-- Celebratory Sparkle Particles (burst when cheer triggers) -->
+            <div id="mascot-sparkles-container" class="absolute -top-7 inset-x-0 flex justify-around pointer-events-none opacity-0 transition-opacity duration-300">
+              <span class="text-amber-400 text-sm"><i class="fa-solid fa-star"></i></span>
+              <span class="text-emerald-400 text-base"><i class="fa-solid fa-bolt"></i></span>
+              <span class="text-amber-400 text-sm"><i class="fa-solid fa-star"></i></span>
+            </div>
+            
+            <!-- Mascot Avatar Wrapper with Duolingo Squash & Stretch -->
+            <div id="quiz-dragon-stage" class="relative group cursor-pointer" onclick="pokeMascot()" title="Klikni zmajčka za spodbudo!">
+              <div id="quiz-dragon-avatar" class="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl overflow-hidden border-3 border-emerald-400/80 dark:border-emerald-500/80 bg-emerald-50/60 dark:bg-emerald-950/40 shadow-lg ring-4 ring-emerald-400/20 mascot-idle transition-transform">
+                <img id="mascot-img" src="/mascot.jpg" alt="Dvojček Zmajček" class="w-full h-full object-cover scale-110 object-top" />
+              </div>
+              <!-- Fire streak aura on high streaks -->
+              <div id="mascot-fire-aura" class="hidden absolute -bottom-1.5 -right-1.5 w-8 h-8 rounded-full bg-amber-500 text-white flex items-center justify-center text-xs shadow-md ring-2 ring-amber-300">
+                <i class="fa-solid fa-fire text-white"></i>
+              </div>
+            </div>
+            
+            <!-- Tactile Ground Shadow -->
+            <div class="w-20 h-2 bg-black/10 dark:bg-black/40 rounded-full blur-xs mt-1.5"></div>
+          </div>
+
+          <!-- Duolingo Speech Bubble -->
+          <div class="flex-1 w-full sm:w-auto">
+            <div class="duo-bubble shadow-xs">
+              <div class="flex items-start justify-between gap-3">
+                <p id="dragon-bubble-text" class="text-xs sm:text-sm font-semibold text-zinc-800 dark:text-zinc-100 leading-snug">
+                  "Pozdravljen! Zbrala sva slovenske besede. Začni z ujemanjem parov ali vpisovanjem dvojine!"
+                </p>
+                <button onclick="resetQuizProgress()" title="Ponastavi napredek vaj" 
+                  class="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 p-1 transition-colors flex-shrink-0">
+                  <i class="fa-solid fa-arrows-rotate text-xs"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats Bar: Progress towards mastery, streak, XP -->
+        <div class="grid grid-cols-3 gap-2.5 pt-2 border-t border-zinc-100 dark:border-zinc-800/80">
+          <div class="p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/60 dark:border-zinc-800 flex flex-col justify-between">
+            <span class="text-[10px] font-semibold text-zinc-400">Osvojeno</span>
+            <div class="flex items-baseline gap-1 mt-1">
+              <span id="quiz-mastered-num" class="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100 font-mono">0</span>
+              <span class="text-[11px] text-zinc-400">/ <span id="quiz-total-words">149</span></span>
+            </div>
+            <div class="w-full bg-zinc-200 dark:bg-zinc-800 h-2 rounded-full overflow-hidden mt-1.5 shadow-inner">
+              <div id="quiz-mastery-bar" class="bg-emerald-500 h-full rounded-full" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/60 dark:border-zinc-800 flex flex-col justify-between">
+            <span class="text-[10px] font-semibold text-zinc-400">Niz (Streak)</span>
+            <div class="flex items-baseline gap-1 mt-1">
+              <span class="text-base sm:text-lg font-bold text-amber-500 font-mono flex items-center gap-1">
+                <i class="fa-solid fa-fire text-amber-500 text-sm"></i> <span id="quiz-streak-display">0</span>
+              </span>
+            </div>
+            <span class="text-[10px] text-zinc-400 mt-1.5 truncate">zaporednih pravilnih</span>
+          </div>
+
+          <div class="p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/60 dark:border-zinc-800 flex flex-col justify-between">
+            <span class="text-[10px] font-semibold text-zinc-400">Točke (XP)</span>
+            <div class="flex items-baseline gap-1 mt-1">
+              <span class="text-base sm:text-lg font-bold text-emerald-600 dark:text-emerald-400 font-mono flex items-center gap-1">
+                <i class="fa-solid fa-bolt text-emerald-500 text-sm"></i> <span id="quiz-xp-display">0</span>
+              </span>
+            </div>
+            <span class="text-[10px] text-zinc-400 mt-1.5 truncate">skupni napredek</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Minigame Mode Tabs -->
+      <div class="flex items-center gap-2 p-1 bg-zinc-100 dark:bg-zinc-900 rounded-xl border border-zinc-200/80 dark:border-zinc-800">
+        <button id="mode-btn-matching" onclick="switchGameMode('matching')" 
+          class="flex-1 py-2 px-3 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-xs border border-zinc-200/70 dark:border-zinc-700">
+          <i class="fa-solid fa-clone text-[11px] text-emerald-600 dark:text-emerald-400"></i>
+          <span>Na pari (Matching)</span>
+        </button>
+        <button id="mode-btn-challenge" onclick="switchGameMode('challenge')" 
+          class="flex-1 py-2 px-3 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100">
+          <i class="fa-solid fa-pen text-[11px] text-amber-500"></i>
+          <span>Dvojina izziv</span>
+        </button>
+        <button id="mode-btn-choice" onclick="switchGameMode('choice')" 
+          class="flex-1 py-2 px-3 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100">
+          <i class="fa-solid fa-list-check text-[11px] text-sky-500"></i>
+          <span>Hitri izbor</span>
+        </button>
+      </div>
+
+      <!-- Mode 1: Matching Pairs Area -->
+      <section id="game-matching-section" class="bg-white dark:bg-dusk-surface p-4 sm:p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-5">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+              <span>Poveži ustrezne pare</span>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100/70 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 font-semibold border border-emerald-300/60 dark:border-emerald-800">+10 XP na par</span>
+            </h3>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+              Klikni slovensko besedo/dvojino na levi in njen ustrezen prevod na desni.
+            </p>
+          </div>
+          <button onclick="initMatchingPairsGame()" class="px-2.5 py-1 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs text-zinc-600 dark:text-zinc-400 transition-colors flex items-center gap-1">
+            <i class="fa-solid fa-shuffle text-[10px]"></i>
+            <span class="hidden sm:inline">Premešaj</span>
+          </button>
+        </div>
+
+        <!-- 2 Columns Grid for Tiles -->
+        <div class="grid grid-cols-2 gap-3 sm:gap-4" id="matching-tiles-board">
+          <!-- Column 1: Slovenian Words -->
+          <div class="space-y-2.5" id="matching-col-sl"></div>
+          <!-- Column 2: Translations -->
+          <div class="space-y-2.5" id="matching-col-tr"></div>
+        </div>
+
+        <!-- Matching Victory Round Card (hidden until 5 pairs cleared) -->
+        <div id="matching-victory-card" class="hidden p-5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 text-center space-y-3">
+          <div class="w-12 h-12 mx-auto rounded-full overflow-hidden border-2 border-emerald-500 shadow-md mascot-celebrate">
+            <img src="/mascot.jpg" alt="Bravo" class="w-full h-full object-cover scale-110 object-top" />
+          </div>
+          <div>
+            <h4 class="text-base font-bold text-emerald-900 dark:text-emerald-200">Vseh 5 parov je pravilno povezanih!</h4>
+            <p class="text-xs text-emerald-700 dark:text-emerald-300 mt-0.5">Odlično! Prislužil si si +25 bonus točk.</p>
+          </div>
+          <button onclick="initMatchingPairsGame()" class="btn-3d-matcha px-5 py-2.5 rounded-xl font-bold text-xs tracking-wide shadow-sm inline-flex items-center gap-2">
+            <span>Naslednjih 5 besed</span>
+            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </button>
+        </div>
+      </section>
+
+      <!-- Mode 2: Dual Challenge Area (Type-in with Caron Tolerance) -->
+      <section id="game-challenge-section" class="hidden bg-white dark:bg-dusk-surface p-4 sm:p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-5">
+        <div class="flex items-center justify-between">
+          <div class="space-y-0.5">
+            <h3 class="text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+              <span>Dvojina izziv</span>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300 font-semibold border border-amber-300/60 dark:border-amber-800">+15 XP</span>
+            </h3>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400">
+              Vpiši pravilno obliko dvojine za prikazano slovensko besedo.
+            </p>
+          </div>
+          <button onclick="initDualChallengeGame()" class="px-2.5 py-1 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs text-zinc-600 dark:text-zinc-400 transition-colors flex items-center gap-1">
+            <i class="fa-solid fa-forward-step text-[10px]"></i>
+            <span class="hidden sm:inline">Preskoči</span>
+          </button>
+        </div>
+
+        <!-- Target Prompt Card -->
+        <div class="p-6 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800 text-center space-y-3">
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-100/60 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300/50 dark:border-emerald-800 text-[11px] font-medium" id="challenge-spol-pill">
+            Moški spol
+          </div>
+          <div>
+            <div id="challenge-target-word" class="text-3xl sm:text-4xl font-display font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">pes</div>
+            <div id="challenge-target-meaning" class="text-sm text-zinc-500 dark:text-zinc-400 mt-1 italic">pomen: pas</div>
+          </div>
+          <p class="text-xs text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto">
+            Vpiši obliko za natančno 2 enoti (lahko vpišeš z "dva/dve" ali samo samostalnik):
+          </p>
+        </div>
+
+        <!-- Input and Check Button -->
+        <div class="flex gap-2 max-w-md mx-auto">
+          <input type="text" id="challenge-input" 
+            class="flex-1 px-4 py-2.5 bg-zinc-50 dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700 rounded-xl text-sm font-medium text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:border-emerald-500 dark:focus:border-emerald-500 transition-colors" 
+            placeholder="Npr. dva psa..." autocomplete="off" onkeypress="handleChallengeEnter(event)">
+          <button id="challenge-check-btn" onclick="checkChallengeAnswer()" 
+            class="btn-3d-matcha px-5 py-2.5 rounded-xl font-bold text-xs tracking-wide shadow-sm flex items-center gap-1.5">
+            <span>Preveri</span>
+            <i class="fa-solid fa-check text-xs"></i>
+          </button>
+        </div>
+      </section>
+
+      <!-- Mode 3: Multiple Choice Area -->
+      <section id="game-choice-section" class="hidden bg-white dark:bg-dusk-surface p-4 sm:p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-5">
+        <div class="flex items-center justify-between">
+          <div class="space-y-0.5">
+            <h3 class="text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+              <span>Hitri izbor dvojine</span>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-sky-100 dark:bg-sky-950/70 text-sky-800 dark:text-sky-300 font-semibold border border-sky-300/60 dark:border-sky-800">+10 XP</span>
+            </h3>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400">
+              Izberi pravilno obliko dvojine med ponujenimi možnostmi.
+            </p>
+          </div>
+          <button onclick="initMultipleChoiceGame()" class="px-2.5 py-1 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs text-zinc-600 dark:text-zinc-400 transition-colors flex items-center gap-1">
+            <i class="fa-solid fa-forward-step text-[10px]"></i>
+            <span class="hidden sm:inline">Preskoči</span>
+          </button>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800 text-center space-y-2">
+          <span class="text-xs font-semibold text-zinc-400">Kako se glasi dvojina za:</span>
+          <div id="choice-prompt-word" class="text-2xl sm:text-3xl font-display font-bold text-zinc-900 dark:text-zinc-100">--</div>
+          <div id="choice-prompt-sub" class="text-xs text-zinc-500 dark:text-zinc-400">--</div>
+        </div>
+
+        <!-- 4 Multiple Choice Grid Buttons -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="choice-options-grid"></div>
+      </section>
+
+    </div>
+
+    <!-- TAB 3: Učna pot (Duolingo-Grade Stepping-Stones Learning Path) -->
+    <div id="main-tab-path" class="hidden space-y-6">
+      
+      <!-- Duolingo Unit Header Banner -->
+      <div class="rounded-3xl bg-emerald-800 dark:bg-emerald-950/90 text-white p-5 sm:p-6 shadow-lg border border-emerald-600/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-emerald-200">Enota 1</span>
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-900/60 text-emerald-200 border border-emerald-400/30">Začetek</span>
+          </div>
+          <h2 class="text-lg sm:text-xl font-bold font-display mt-1 text-white">Osnove slovenske dvojine</h2>
+          <p class="text-xs text-emerald-100/90 mt-1 max-w-xl">
+            Spoznaj pravila za moški (-a), ženski (-i) in srednji spol (-i). Vaje temeljijo na gradivu slovenskih učbenikov.
+          </p>
+        </div>
+        <div class="flex items-center gap-2 self-end sm:self-center">
+          <button onclick="switchMainTab('quiz')" class="btn-3d-neutral px-4 py-2 rounded-xl text-xs font-bold text-zinc-900 flex items-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-gamepad text-emerald-600"></i>
+            <span>Odpri vaje</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Serpentine Zig-Zag Stepping Stones Path -->
+      <div class="relative py-8 max-w-md mx-auto">
+        
+        <!-- Curved Connecting SVG Path in Background -->
+        <svg aria-hidden="true" class="absolute inset-0 w-full h-full pointer-events-none stroke-zinc-200 dark:stroke-zinc-800" fill="none" stroke-width="8" stroke-linecap="round" stroke-dasharray="12 8">
+          <path d="M 224 50 Q 140 130 160 210 T 280 370 T 224 530" />
+        </svg>
+
+        <div class="relative space-y-16 z-10 pt-4 pb-6">
+          
+          <!-- Step 1: Center (Completed) -->
+          <div class="flex flex-col items-center text-center">
+            <div class="w-20 h-20 rounded-full bg-emerald-500 border-4 border-emerald-300 border-b-6 border-b-emerald-700 flex items-center justify-center text-2xl text-white shadow-lg cursor-pointer active:translate-y-1 transition-transform" onclick="switchMainTab('quiz')" title="Klikni za vajo">
+              <i class="fa-solid fa-check text-white"></i>
+            </div>
+            <div class="flex items-center gap-1 text-amber-400 text-xs mt-2">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+            </div>
+            <span class="text-xs font-bold text-zinc-800 dark:text-zinc-200 mt-1">1. Dva moška (-a)</span>
+          </div>
+
+          <!-- Step 2: Left (Active Node with Dragon Mascot Perched on Top!) -->
+          <div class="relative flex flex-col items-center text-center -translate-x-12 sm:-translate-x-16 pt-16">
+            <!-- Mascot Perched On Stepping Stone -->
+            <div class="absolute -top-6 z-20 flex flex-col items-center cursor-pointer" onclick="pokeMascot()" title="Zmajček čaka nate!">
+              <div class="px-2.5 py-1 rounded-xl bg-white dark:bg-dusk-card text-emerald-600 dark:text-emerald-400 text-[10px] font-bold shadow-md border border-emerald-300 dark:border-emerald-700 mb-1 flex items-center gap-1">
+                <span>Začni tukaj!</span> <i class="fa-solid fa-play text-[8px]"></i>
+              </div>
+              <div class="w-16 h-16 rounded-2xl overflow-hidden border-2 border-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 shadow-lg mascot-idle">
+                <img src="/mascot.jpg" alt="Zmajček" class="w-full h-full object-cover scale-110 object-top" />
+              </div>
+            </div>
+            
+            <!-- Active 3D Stepping Stone with Pulsing Halo -->
+            <div class="relative w-20 h-20 flex items-center justify-center mt-3">
+              <div class="absolute inset-0 rounded-full bg-emerald-400/40 dark:bg-emerald-500/30 pulse-halo"></div>
+              <div class="w-20 h-20 rounded-full bg-emerald-500 border-4 border-emerald-300 border-b-6 border-b-emerald-700 flex items-center justify-center text-2xl text-white shadow-xl cursor-pointer active:translate-y-1 transition-transform" onclick="switchMainTab('quiz')" title="Nadaljuj z učenjem!">
+                <i class="fa-solid fa-star text-white"></i>
+              </div>
+            </div>
+            <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 mt-2">2. Dve ženski (-i)</span>
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100/80 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 font-semibold border border-emerald-300/60 mt-1">Aktivna lekcija</span>
+          </div>
+
+          <!-- Step 3: Right (Locked) -->
+          <div class="flex flex-col items-center text-center translate-x-12 sm:translate-x-16 opacity-75">
+            <div class="w-20 h-20 rounded-full bg-zinc-200 dark:bg-zinc-800 border-4 border-zinc-300 dark:border-zinc-700 border-b-6 border-b-zinc-400 dark:border-b-zinc-900 flex items-center justify-center text-xl text-zinc-400 dark:text-zinc-500 shadow-sm cursor-not-allowed">
+              <i class="fa-solid fa-lock"></i>
+            </div>
+            <span class="text-xs font-semibold text-zinc-600 dark:text-zinc-400 mt-2">3. Dve mesti (-i)</span>
+            <span class="text-[10px] text-zinc-400 mt-0.5">Srednji spol</span>
+          </div>
+
+          <!-- Step 4: Center (Milestone Treasure Chest) -->
+          <div class="flex flex-col items-center text-center opacity-85">
+            <div class="w-20 h-20 rounded-2xl bg-amber-500 border-4 border-amber-300 border-b-6 border-b-amber-700 flex items-center justify-center text-2xl text-white shadow-lg cursor-pointer active:translate-y-1 transition-transform" onclick="triggerDragonReaction('celebrate', 'Skrinja znanja! Ko zaključiš prve 3 lekcije, te čaka posebna nagrada!')" title="Skrinja z nagrado">
+              <i class="fa-solid fa-gift"></i>
+            </div>
+            <span class="text-xs font-bold text-amber-500 mt-2">Skrinja znanja</span>
+            <span class="text-[10px] text-zinc-400">Bonus XP &amp; Značka</span>
+          </div>
+
+          <!-- Step 5: Left (Unit 2 Preview: Verbs) -->
+          <div class="flex flex-col items-center text-center -translate-x-10 sm:-translate-x-14 opacity-70">
+            <div class="w-20 h-20 rounded-full bg-zinc-200 dark:bg-zinc-800 border-4 border-zinc-300 dark:border-zinc-700 border-b-6 border-b-zinc-400 dark:border-b-zinc-900 flex items-center justify-center text-xl text-zinc-400 dark:text-zinc-500 shadow-sm cursor-not-allowed">
+              <i class="fa-solid fa-lock"></i>
+            </div>
+            <span class="text-xs font-semibold text-zinc-600 dark:text-zinc-400 mt-2">4. Glagoli v dvojini</span>
+            <span class="text-[10px] text-zinc-400 mt-0.5">Midva govoriva</span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="text-center pt-2">
+        <button onclick="switchMainTab('quiz')" class="btn-duo-primary px-7 py-3 rounded-2xl font-bold text-xs sm:text-sm tracking-wide shadow-md inline-flex items-center gap-2">
+          <span>Odpri Vaje & Kviz</span>
+          <i class="fa-solid fa-gamepad text-xs"></i>
+        </button>
+      </div>
+
+    </div>
   </main>
 
   <!-- Language Selection Modal (Overlay) -->
   <div id="lang-modal" class="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4 hidden transition-opacity">
-    <div class="bg-white dark:bg-[#121215] border border-zinc-200 dark:border-zinc-800 rounded-lg max-w-xl w-full p-5 shadow-lg space-y-4">
+    <div class="bg-white dark:bg-dusk-card border border-zinc-200 dark:border-zinc-800 rounded-lg max-w-xl w-full p-5 shadow-lg space-y-4">
       
       <div class="flex items-start justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
         <div>
@@ -637,7 +1355,7 @@
 
   <!-- Phonemic Legend Modal (IPA & SSKJ Accents) -->
   <div id="phonemic-modal" class="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4 hidden transition-opacity">
-    <div class="bg-white dark:bg-[#121215] border border-zinc-200 dark:border-zinc-800 rounded-lg max-w-lg w-full p-5 shadow-lg space-y-4">
+    <div class="bg-white dark:bg-dusk-card border border-zinc-200 dark:border-zinc-800 rounded-lg max-w-lg w-full p-5 shadow-lg space-y-4">
       
       <div class="flex items-start justify-between border-b border-zinc-100 dark:border-zinc-800 pb-3">
         <div>
@@ -654,7 +1372,7 @@
       <div class="space-y-3 text-xs max-h-[60vh] overflow-y-auto pr-1">
         <div class="border border-zinc-200 dark:border-zinc-800 rounded-md overflow-hidden">
           <table class="w-full text-left border-collapse">
-            <thead class="bg-zinc-50 dark:bg-zinc-900/60 border-b border-zinc-200 dark:border-zinc-800 text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">
+            <thead class="bg-zinc-50 dark:bg-zinc-900/60 border-b border-zinc-200 dark:border-zinc-800 text-[11px] font-semibold text-zinc-500">
               <tr>
                 <th id="phonemic-th-sign" class="p-2.5">Znak</th>
                 <th id="phonemic-th-meaning" class="p-2.5">Pomen / Izgovor</th>
@@ -1698,18 +2416,25 @@
       const html = document.documentElement;
       const themeIcon = document.getElementById('theme-icon');
 
-      if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        html.classList.add('dark');
+      if (localStorage.theme === 'light') {
+        html.classList.remove('dark');
+        html.setAttribute('data-theme', 'light');
         themeIcon.classList.replace('fa-moon', 'fa-sun');
+      } else {
+        html.classList.add('dark');
+        html.setAttribute('data-theme', 'dark');
+        themeIcon.classList.replace('fa-sun', 'fa-moon');
       }
 
       themeBtn.addEventListener('click', () => {
         html.classList.toggle('dark');
         if (html.classList.contains('dark')) {
           localStorage.theme = 'dark';
+          html.setAttribute('data-theme', 'dark');
           themeIcon.classList.replace('fa-moon', 'fa-sun');
         } else {
           localStorage.theme = 'light';
+          html.setAttribute('data-theme', 'light');
           themeIcon.classList.replace('fa-sun', 'fa-moon');
         }
       });
@@ -2739,13 +3464,668 @@
       if (modal) modal.classList.add('hidden');
     }
 
-    // Keyboard support: Escape closes any open modal
+    /* ========================================================================= */
+    /* DVOJČEK INTERACTIVE QUIZ & MINIGAMES ENGINE (DUOLINGO MECHANICS)          */
+    /* ========================================================================= */
+    let currentMainTab = 'explorer';
+    let currentQuizMode = 'matching';
+    let quizPool = [];
+    let quizState = null;
+    let matchingGameState = null;
+    let challengeCurrentWord = null;
+    let choiceCurrentWord = null;
+    let duoTrayActive = false;
+    let duoTrayCallback = null;
+
+    const QUIZ_STORAGE_KEY = 'dvojcek_quiz_state_v1';
+
+    function getInitialQuizState() {
+      return {
+        xp: 0,
+        streak: 0,
+        bestStreak: 0,
+        wordStats: {},
+        mistakeQueue: [],
+        recentWordIds: []
+      };
+    }
+
+    function loadQuizState() {
+      try {
+        const raw = localStorage.getItem(QUIZ_STORAGE_KEY);
+        if (raw) {
+          quizState = JSON.parse(raw);
+          if (!quizState.wordStats) quizState.wordStats = {};
+          if (!Array.isArray(quizState.mistakeQueue)) quizState.mistakeQueue = [];
+          if (!Array.isArray(quizState.recentWordIds)) quizState.recentWordIds = [];
+          return quizState;
+        }
+      } catch (e) {
+        console.warn('Could not parse quiz state', e);
+      }
+      quizState = getInitialQuizState();
+      saveQuizState();
+      return quizState;
+    }
+
+    function saveQuizState() {
+      if (!quizState) return;
+      try {
+        localStorage.setItem(QUIZ_STORAGE_KEY, JSON.stringify(quizState));
+      } catch (e) {
+        console.warn('Failed saving quiz state', e);
+      }
+      updateQuizHUD();
+    }
+
+    function resetQuizProgress() {
+      if (confirm('Ali res želite ponastaviti svoj napredek pri vajah in kvizih?')) {
+        quizState = getInitialQuizState();
+        saveQuizState();
+        triggerDragonReaction('neutral', '"Napredek je ponastavljen. Začni znova in osvoji vse besede!"');
+        if (currentQuizMode === 'matching') initMatchingPairsGame();
+        else if (currentQuizMode === 'challenge') initDualChallengeGame();
+        else if (currentQuizMode === 'choice') initMultipleChoiceGame();
+      }
+    }
+
+    function updateQuizHUD() {
+      if (!quizState) loadQuizState();
+      const masteredCount = Object.values(quizState.wordStats || {}).filter(w => w.level >= 3).length;
+      const totalWords = quizPool.length || 149;
+      const pct = Math.min(100, Math.round((masteredCount / Math.max(1, totalWords)) * 100));
+
+      const numEl = document.getElementById('quiz-mastered-num');
+      const barEl = document.getElementById('quiz-mastery-bar');
+      const totalEl = document.getElementById('quiz-total-words');
+      const streakEl = document.getElementById('quiz-streak-display');
+      const xpEl = document.getElementById('quiz-xp-display');
+      const streakCountEl = document.getElementById('quiz-streak-count');
+      const stripMastered = document.getElementById('strip-mastered-count');
+      const stripXp = document.getElementById('strip-xp-count');
+
+      if (numEl) numEl.innerText = masteredCount;
+      if (barEl && barEl.style) barEl.style.width = `${pct}%`;
+      if (totalEl) totalEl.innerText = totalWords;
+      if (streakEl) streakEl.innerText = quizState.streak || 0;
+      if (xpEl) xpEl.innerText = quizState.xp || 0;
+      if (streakCountEl) streakCountEl.innerText = quizState.streak || 0;
+      if (stripMastered) stripMastered.innerText = masteredCount;
+      if (stripXp) stripXp.innerText = quizState.xp || 0;
+    }
+
+    function switchMainTab(tab) {
+      currentMainTab = tab;
+      const expTab = document.getElementById('main-tab-explorer');
+      const quizTab = document.getElementById('main-tab-quiz');
+      const pathTab = document.getElementById('main-tab-path');
+
+      const btnExp = document.getElementById('tab-btn-explorer');
+      const btnQuiz = document.getElementById('tab-btn-quiz');
+      const btnPath = document.getElementById('tab-btn-path');
+
+      [btnExp, btnQuiz, btnPath].forEach(btn => {
+        if (!btn) return;
+        btn.classList.remove('active', 'bg-zinc-900', 'text-white', 'dark:bg-zinc-100', 'dark:text-zinc-900', 'shadow-xs');
+        btn.classList.add('bg-transparent', 'text-zinc-600', 'dark:text-zinc-400');
+      });
+
+      if (tab === 'explorer') {
+        if (expTab) expTab.classList.remove('hidden');
+        if (quizTab) quizTab.classList.add('hidden');
+        if (pathTab) pathTab.classList.add('hidden');
+        if (btnExp) {
+          btnExp.className = "tab-btn active px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-2 bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 border border-transparent shadow-xs transition-colors";
+        }
+      } else if (tab === 'quiz') {
+        if (expTab) expTab.classList.add('hidden');
+        if (quizTab) quizTab.classList.remove('hidden');
+        if (pathTab) pathTab.classList.add('hidden');
+        if (btnQuiz) {
+          btnQuiz.className = "tab-btn active px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-2 bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 border border-transparent shadow-xs transition-colors";
+        }
+        initQuizTab();
+      } else if (tab === 'path') {
+        if (expTab) expTab.classList.add('hidden');
+        if (quizTab) quizTab.classList.add('hidden');
+        if (pathTab) pathTab.classList.remove('hidden');
+        if (btnPath) {
+          btnPath.className = "tab-btn active px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-2 bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 border border-transparent shadow-xs transition-colors";
+        }
+      }
+    }
+
+    function switchGameMode(mode) {
+      currentQuizMode = mode;
+      hideDuoTray();
+      const secMatching = document.getElementById('game-matching-section');
+      const secChallenge = document.getElementById('game-challenge-section');
+      const secChoice = document.getElementById('game-choice-section');
+
+      const btnMatching = document.getElementById('mode-btn-matching');
+      const btnChallenge = document.getElementById('mode-btn-challenge');
+      const btnChoice = document.getElementById('mode-btn-choice');
+
+      const activeBtnClass = "flex-1 py-2 px-3 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-xs border border-zinc-200/70 dark:border-zinc-700";
+      const inactiveBtnClass = "flex-1 py-2 px-3 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100";
+
+      if (secMatching) secMatching.classList.toggle('hidden', mode !== 'matching');
+      if (secChallenge) secChallenge.classList.toggle('hidden', mode !== 'challenge');
+      if (secChoice) secChoice.classList.toggle('hidden', mode !== 'choice');
+
+      if (btnMatching) btnMatching.className = mode === 'matching' ? activeBtnClass : inactiveBtnClass;
+      if (btnChallenge) btnChallenge.className = mode === 'challenge' ? activeBtnClass : inactiveBtnClass;
+      if (btnChoice) btnChoice.className = mode === 'choice' ? activeBtnClass : inactiveBtnClass;
+
+      if (mode === 'matching') {
+        if (!matchingGameState) initMatchingPairsGame();
+        triggerDragonReaction('neutral', '"Poveži 5 parov s klikanjem! Izberi slovensko besedo in njen prevod."');
+      } else if (mode === 'challenge') {
+        initDualChallengeGame();
+        triggerDragonReaction('neutral', '"Vpiši pravilno obliko dvojine za prikazano besedo."');
+      } else if (mode === 'choice') {
+        initMultipleChoiceGame();
+        triggerDragonReaction('neutral', '"Izberi pravilno obliko dvojine med 4 možnostmi."');
+      }
+    }
+
+    function burstSparkles() {
+      const container = document.getElementById('mascot-sparkles-container');
+      if (!container) return;
+      container.classList.remove('opacity-0');
+      container.classList.add('opacity-100');
+      const sparkles = container.querySelectorAll('span');
+      sparkles.forEach((s) => {
+        s.classList.remove('sparkle-burst');
+        void s.offsetWidth;
+        s.classList.add('sparkle-burst');
+      });
+      setTimeout(() => {
+        container.classList.remove('opacity-100');
+        container.classList.add('opacity-0');
+      }, 750);
+    }
+
+    window.pokeMascot = function() {
+      const quotes = [
+        "Hej! Pripravljen na dvojino? Začni z vajo!",
+        "V slovenščini midva govoriva v dvojini! Lepo, kajne?",
+        "Kar pogumno, vsaka beseda šteje!",
+        "Zmajček stiska pesti zate! 🔥",
+        "Dva zmaja, dve krili, ena zmaga!"
+      ];
+      const q = quotes[Math.floor(Math.random() * quotes.length)];
+      triggerDragonReaction('celebrate', `"${q}"`);
+    };
+
+    function triggerDragonReaction(type, speechText) {
+      const avatar = document.getElementById('quiz-dragon-avatar');
+      const bubble = document.getElementById('dragon-bubble-text');
+      if (bubble && speechText) bubble.innerText = speechText;
+      if (!avatar) return;
+
+      avatar.classList.remove('mascot-idle', 'mascot-celebrate', 'mascot-wobble');
+      void avatar.offsetWidth;
+
+      if (type === 'celebrate') {
+        avatar.classList.add('mascot-celebrate');
+        burstSparkles();
+        setTimeout(() => {
+          avatar.classList.remove('mascot-celebrate');
+          avatar.classList.add('mascot-idle');
+        }, 800);
+      } else if (type === 'wobble') {
+        avatar.classList.add('mascot-wobble');
+        setTimeout(() => {
+          avatar.classList.remove('mascot-wobble');
+          avatar.classList.add('mascot-idle');
+        }, 700);
+      } else {
+        avatar.classList.add('mascot-idle');
+      }
+    }
+
+    async function initQuizTab() {
+      loadQuizState();
+      updateQuizHUD();
+      if (!quizPool.length) {
+        try {
+          const res = await fetch(`/api/quiz/pool?lang=${currentLang}`);
+          if (res.ok) {
+            const data = await res.json();
+            quizPool = data.pool || [];
+            updateQuizHUD();
+          }
+        } catch (e) {
+          console.warn('Failed fetching quiz pool', e);
+        }
+      }
+      if (!matchingGameState && currentQuizMode === 'matching') {
+        initMatchingPairsGame();
+      }
+    }
+
+    function drawAdaptiveWords(count = 1) {
+      if (!quizPool.length) return [];
+      loadQuizState();
+
+      const candidateMap = new Map();
+      const recentSet = new Set(quizState.recentWordIds.slice(-20));
+
+      // 1. Mistakes
+      const mistakes = quizState.mistakeQueue.filter(id => !recentSet.has(id));
+      for (const id of mistakes) {
+        const item = quizPool.find(w => w.id === id);
+        if (item && !candidateMap.has(item.id)) candidateMap.set(item.id, { item, score: 100 });
+      }
+
+      // 2. Unpracticed
+      const unpracticed = quizPool.filter(w => (!quizState.wordStats[w.id] || quizState.wordStats[w.id].level === 0) && !recentSet.has(w.id));
+      for (const item of unpracticed) {
+        if (!candidateMap.has(item.id)) candidateMap.set(item.id, { item, score: 50 });
+      }
+
+      // 3. Practicing (levels 1 and 2)
+      const inProgress = quizPool.filter(w => {
+        const lvl = quizState.wordStats[w.id]?.level;
+        return (lvl === 1 || lvl === 2) && !recentSet.has(w.id);
+      });
+      for (const item of inProgress) {
+        if (!candidateMap.has(item.id)) candidateMap.set(item.id, { item, score: 30 });
+      }
+
+      // 4. Fill remaining from pool if candidates fewer than count
+      if (candidateMap.size < count) {
+        const remaining = [...quizPool].sort(() => 0.5 - Math.random());
+        for (const item of remaining) {
+          if (!candidateMap.has(item.id)) candidateMap.set(item.id, { item, score: 10 });
+          if (candidateMap.size >= count) break;
+        }
+      }
+
+      const sorted = Array.from(candidateMap.values())
+        .sort((a, b) => (b.score + Math.random() * 20) - (a.score + Math.random() * 20))
+        .slice(0, count)
+        .map(x => x.item);
+
+      sorted.forEach(w => {
+        quizState.recentWordIds.push(w.id);
+        if (quizState.recentWordIds.length > 30) quizState.recentWordIds.shift();
+      });
+      saveQuizState();
+
+      return sorted;
+    }
+
+    function recordWordResult(wordId, isCorrect) {
+      loadQuizState();
+      if (!quizState.wordStats[wordId]) {
+        quizState.wordStats[wordId] = { correct: 0, wrong: 0, level: 0, lastPracticed: Date.now() };
+      }
+      const stat = quizState.wordStats[wordId];
+      stat.lastPracticed = Date.now();
+
+      if (isCorrect) {
+        stat.correct++;
+        if (stat.level < 3) stat.level++;
+        quizState.streak = (quizState.streak || 0) + 1;
+        if (quizState.streak > (quizState.bestStreak || 0)) {
+          quizState.bestStreak = quizState.streak;
+        }
+        quizState.mistakeQueue = quizState.mistakeQueue.filter(id => id !== wordId);
+      } else {
+        stat.wrong++;
+        if (stat.level > 0) stat.level = Math.max(0, stat.level - 1);
+        quizState.streak = 0;
+        if (!quizState.mistakeQueue.includes(wordId)) {
+          quizState.mistakeQueue.push(wordId);
+        }
+      }
+      saveQuizState();
+    }
+
+    function initMatchingPairsGame() {
+      const words = drawAdaptiveWords(5);
+      if (!words.length) return;
+
+      document.getElementById('matching-victory-card')?.classList.add('hidden');
+      document.getElementById('matching-tiles-board')?.classList.remove('hidden');
+
+      const colSl = document.getElementById('matching-col-sl');
+      const colTr = document.getElementById('matching-col-tr');
+      if (!colSl || !colTr) return;
+
+      colSl.innerHTML = '';
+      colTr.innerHTML = '';
+
+      matchingGameState = {
+        pairs: words.map(w => ({
+          id: w.id,
+          slDisplay: w.dual || w.slWord,
+          trDisplay: w.translation || (w.translations && w.translations[currentLang]) || (w.translations && w.translations['en']) || w.slWord,
+          matched: false
+        })),
+        selectedLeftId: null,
+        selectedRightId: null,
+        matchedCount: 0
+      };
+
+      const leftItems = [...matchingGameState.pairs].sort(() => 0.5 - Math.random());
+      const rightItems = [...matchingGameState.pairs].sort(() => 0.5 - Math.random());
+
+      leftItems.forEach(item => {
+        const btn = document.createElement('button');
+        btn.id = `match-left-${item.id}`;
+        btn.className = "btn-duo-tile w-full flex items-center justify-between text-left";
+        btn.innerHTML = `<span class="truncate">${item.slDisplay}</span><i class="fa-solid fa-circle-check text-emerald-500 opacity-0 transition-opacity text-xs" id="icon-left-${item.id}"></i>`;
+        btn.onclick = () => onSelectMatchingTile('left', item.id);
+        colSl.appendChild(btn);
+      });
+
+      rightItems.forEach(item => {
+        const btn = document.createElement('button');
+        btn.id = `match-right-${item.id}`;
+        btn.className = "btn-duo-tile w-full flex items-center justify-between text-left";
+        btn.innerHTML = `<span class="truncate">${item.trDisplay}</span><i class="fa-solid fa-circle-check text-emerald-500 opacity-0 transition-opacity text-xs" id="icon-right-${item.id}"></i>`;
+        btn.onclick = () => onSelectMatchingTile('right', item.id);
+        colTr.appendChild(btn);
+      });
+    }
+
+    function onSelectMatchingTile(col, id) {
+      if (!matchingGameState) return;
+
+      const leftBtn = matchingGameState.selectedLeftId ? document.getElementById(`match-left-${matchingGameState.selectedLeftId}`) : null;
+      const rightBtn = matchingGameState.selectedRightId ? document.getElementById(`match-right-${matchingGameState.selectedRightId}`) : null;
+
+      if (col === 'left') {
+        if (leftBtn) leftBtn.classList.remove('is-selected');
+        matchingGameState.selectedLeftId = id;
+        const curBtn = document.getElementById(`match-left-${id}`);
+        if (curBtn) curBtn.classList.add('is-selected');
+      } else {
+        if (rightBtn) rightBtn.classList.remove('is-selected');
+        matchingGameState.selectedRightId = id;
+        const curBtn = document.getElementById(`match-right-${id}`);
+        if (curBtn) curBtn.classList.add('is-selected');
+      }
+
+      if (matchingGameState.selectedLeftId && matchingGameState.selectedRightId) {
+        const leftId = matchingGameState.selectedLeftId;
+        const rightId = matchingGameState.selectedRightId;
+        const elL = document.getElementById(`match-left-${leftId}`);
+        const elR = document.getElementById(`match-right-${rightId}`);
+
+        if (leftId === rightId) {
+          elL.classList.remove('is-selected');
+          elR.classList.remove('is-selected');
+          elL.classList.add('is-matched');
+          elR.classList.add('is-matched');
+
+          document.getElementById(`icon-left-${leftId}`)?.classList.remove('opacity-0');
+          document.getElementById(`icon-right-${rightId}`)?.classList.remove('opacity-0');
+
+          burstSparkles();
+          quizState.xp = (quizState.xp || 0) + 10;
+          recordWordResult(leftId, true);
+          matchingGameState.matchedCount++;
+          matchingGameState.selectedLeftId = null;
+          matchingGameState.selectedRightId = null;
+
+          if (matchingGameState.matchedCount >= 5) {
+            quizState.xp = (quizState.xp || 0) + 25;
+            saveQuizState();
+            triggerDragonReaction('celebrate', '"Bravo! Vseh 5 parov si pravilno povezal! (+25 bonus XP)"');
+            setTimeout(() => {
+              document.getElementById('matching-victory-card')?.classList.remove('hidden');
+              document.getElementById('matching-tiles-board')?.classList.add('hidden');
+            }, 450);
+          } else {
+            triggerDragonReaction('celebrate', `"Pravilno! ${matchingGameState.matchedCount}/5 parov najdenih."`);
+          }
+        } else {
+          elL.classList.add('is-mismatched');
+          elR.classList.add('is-mismatched');
+
+          recordWordResult(leftId, false);
+          triggerDragonReaction('wobble', '"Ups, ta dva para ne pašeta skupaj. Poskusi znova!"');
+
+          setTimeout(() => {
+            elL.classList.remove('is-mismatched', 'is-selected');
+            elR.classList.remove('is-mismatched', 'is-selected');
+            if (matchingGameState) {
+              matchingGameState.selectedLeftId = null;
+              matchingGameState.selectedRightId = null;
+            }
+          }, 550);
+        }
+      }
+    }
+
+    function initDualChallengeGame() {
+      hideDuoTray();
+      const words = drawAdaptiveWords(1);
+      if (!words.length) return;
+      challengeCurrentWord = words[0];
+
+      const wordEl = document.getElementById('challenge-target-word');
+      const meanEl = document.getElementById('challenge-target-meaning');
+      const spolEl = document.getElementById('challenge-spol-pill');
+      const inputEl = document.getElementById('challenge-input');
+
+      if (wordEl) wordEl.innerText = challengeCurrentWord.slWord;
+      if (meanEl) meanEl.innerText = `pomen: ${challengeCurrentWord.translation || (challengeCurrentWord.translations && challengeCurrentWord.translations[currentLang]) || (challengeCurrentWord.translations && challengeCurrentWord.translations['en']) || ''}`;
+      if (spolEl) spolEl.innerText = challengeCurrentWord.spol || 'Samostalnik';
+      if (inputEl) {
+        inputEl.value = '';
+        inputEl.focus();
+      }
+    }
+
+    function handleChallengeEnter(e) {
+      if (e.key === 'Enter') checkChallengeAnswer();
+    }
+
+    async function checkChallengeAnswer() {
+      if (!challengeCurrentWord) return;
+      const inputEl = document.getElementById('challenge-input');
+      const val = (inputEl ? inputEl.value : '').trim();
+      if (!val) return;
+
+      const expected = challengeCurrentWord.dual;
+      try {
+        const res = await fetch('/api/quiz/check', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userInput: val, expected })
+        });
+        const data = await res.json();
+
+        if (data.status === 'correct') {
+          quizState.xp = (quizState.xp || 0) + 15;
+          recordWordResult(challengeCurrentWord.id, true);
+          triggerDragonReaction('celebrate', '"Čudovito! Popoln odgovor!"');
+          showDuoTray('correct', {
+            title: 'Odlično!',
+            subtitle: `Pravilna oblika dvojine: <strong>${expected}</strong> (+15 XP)`
+          }, () => initDualChallengeGame());
+        } else if (data.status === 'diacritics') {
+          recordWordResult(challengeCurrentWord.id, true);
+          quizState.xp = (quizState.xp || 0) + 10;
+          triggerDragonReaction('celebrate', '"Skoraj popolno — pazi na strešice (č, š, ž)!"');
+          showDuoTray('diacritics', {
+            title: 'Skoraj prav!',
+            subtitle: `Pazi na strešice: pravilno je <strong>${expected}</strong> (+10 XP)`
+          }, () => initDualChallengeGame());
+        } else {
+          recordWordResult(challengeCurrentWord.id, false);
+          triggerDragonReaction('wobble', '"Nič hudega, vaja dela mojstra!"');
+          showDuoTray('wrong', {
+            title: 'Ni čisto prav.',
+            subtitle: `Pravilna oblika je: <strong>${expected}</strong>`
+          }, () => initDualChallengeGame());
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function initMultipleChoiceGame() {
+      hideDuoTray();
+      const targetList = drawAdaptiveWords(1);
+      if (!targetList.length) return;
+      choiceCurrentWord = targetList[0];
+
+      const promptWord = document.getElementById('choice-prompt-word');
+      const promptSub = document.getElementById('choice-prompt-sub');
+      const grid = document.getElementById('choice-options-grid');
+      if (!grid) return;
+
+      if (promptWord) promptWord.innerText = choiceCurrentWord.slWord;
+      if (promptSub) promptSub.innerText = `${choiceCurrentWord.spol || ''} • pomen: ${choiceCurrentWord.translation || (choiceCurrentWord.translations && choiceCurrentWord.translations[currentLang]) || (choiceCurrentWord.translations && choiceCurrentWord.translations['en']) || ''}`;
+
+      grid.innerHTML = '';
+
+      const correctChoice = choiceCurrentWord.dual;
+      const otherWords = quizPool.filter(w => w.id !== choiceCurrentWord.id && w.dual && w.dual !== correctChoice);
+      const shuffledOthers = [...otherWords].sort(() => 0.5 - Math.random()).slice(0, 3);
+      const options = [
+        { text: correctChoice, isCorrect: true },
+        ...shuffledOthers.map(o => ({ text: o.dual, isCorrect: false }))
+      ].sort(() => 0.5 - Math.random());
+
+      options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = "btn-duo-tile p-4 w-full flex items-center justify-between text-left font-semibold text-sm sm:text-base";
+        btn.innerHTML = `<span>${opt.text}</span><i class="fa-solid fa-arrow-right text-[10px] text-zinc-400"></i>`;
+        btn.onclick = () => selectChoiceOption(btn, opt.isCorrect, correctChoice);
+        grid.appendChild(btn);
+      });
+    }
+
+    function selectChoiceOption(btn, isCorrect, correctChoice) {
+      const grid = document.getElementById('choice-options-grid');
+      if (grid) grid.querySelectorAll('button').forEach(b => b.classList.add('pointer-events-none'));
+
+      if (isCorrect) {
+        btn.classList.add('is-matched');
+        quizState.xp = (quizState.xp || 0) + 10;
+        recordWordResult(choiceCurrentWord.id, true);
+        triggerDragonReaction('celebrate', '"Točno tako! Odlična izbira."');
+        showDuoTray('correct', {
+          title: 'Odlično!',
+          subtitle: `Pravilna oblika je: <strong>${correctChoice}</strong> (+10 XP)`
+        }, () => initMultipleChoiceGame());
+      } else {
+        btn.classList.add('is-mismatched');
+        recordWordResult(choiceCurrentWord.id, false);
+        triggerDragonReaction('wobble', '"Napačen odgovor. Oglej si pravilno rešitev."');
+        showDuoTray('wrong', {
+          title: 'Napačno.',
+          subtitle: `Pravilna rešitev je: <strong>${correctChoice}</strong>`
+        }, () => initMultipleChoiceGame());
+      }
+    }
+
+    function showDuoTray(type, data, nextCallback) {
+      duoTrayCallback = nextCallback;
+      duoTrayActive = true;
+      const tray = document.getElementById('duo-feedback-tray');
+      const content = document.getElementById('duo-feedback-content');
+      const btn = document.getElementById('duo-continue-btn');
+      if (!tray || !content) return;
+
+      tray.classList.remove('hidden', 'bg-emerald-100', 'dark:bg-emerald-950', 'border-emerald-400', 'bg-amber-100', 'dark:bg-amber-950', 'border-amber-400', 'bg-red-100', 'dark:bg-red-950', 'border-red-400', 'text-emerald-900', 'dark:text-emerald-100', 'text-amber-900', 'dark:text-amber-100', 'text-red-900', 'dark:text-red-100');
+
+      if (type === 'correct') {
+        tray.classList.add('bg-emerald-100', 'dark:bg-emerald-950', 'border-emerald-400', 'text-emerald-900', 'dark:text-emerald-100');
+        content.innerHTML = `
+          <div class="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xl shadow-md flex-shrink-0 animate-bounce">
+            <i class="fa-solid fa-check"></i>
+          </div>
+          <div>
+            <div class="font-bold text-base sm:text-lg text-emerald-900 dark:text-emerald-100">${data.title}</div>
+            <div class="text-xs sm:text-sm text-emerald-800 dark:text-emerald-200 mt-0.5">${data.subtitle}</div>
+          </div>
+        `;
+        if (btn) btn.className = "btn-duo-primary px-8 py-3.5 rounded-2xl font-bold text-sm tracking-wide flex items-center justify-center gap-2 w-full sm:w-auto shadow-lg";
+      } else if (type === 'diacritics') {
+        tray.classList.add('bg-amber-100', 'dark:bg-amber-950', 'border-amber-400', 'text-amber-900', 'dark:text-amber-100');
+        content.innerHTML = `
+          <div class="w-10 h-10 rounded-full bg-amber-500 text-white flex items-center justify-center text-lg shadow-sm flex-shrink-0">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+          <div>
+            <div class="font-bold text-sm sm:text-base">${data.title}</div>
+            <div class="text-xs sm:text-sm text-amber-800 dark:text-amber-200 mt-0.5">${data.subtitle}</div>
+          </div>
+        `;
+        if (btn) btn.className = "btn-3d-neutral px-6 py-2.5 rounded-xl font-bold text-xs sm:text-sm tracking-wide flex items-center justify-center gap-2 w-full sm:w-auto shadow-md";
+      } else {
+        tray.classList.add('bg-red-100', 'dark:bg-red-950', 'border-red-400', 'text-red-900', 'dark:text-red-100');
+        content.innerHTML = `
+          <div class="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center text-lg shadow-sm flex-shrink-0">
+            <i class="fa-solid fa-xmark"></i>
+          </div>
+          <div>
+            <div class="font-bold text-sm sm:text-base">${data.title}</div>
+            <div class="text-xs sm:text-sm text-red-800 dark:text-red-200 mt-0.5">${data.subtitle}</div>
+          </div>
+        `;
+        if (btn) btn.className = "btn-3d-neutral px-6 py-2.5 rounded-xl font-bold text-xs sm:text-sm tracking-wide flex items-center justify-center gap-2 w-full sm:w-auto shadow-md";
+      }
+
+      tray.classList.remove('translate-y-full');
+      tray.classList.add('translate-y-0');
+    }
+
+    function hideDuoTray() {
+      duoTrayActive = false;
+      const tray = document.getElementById('duo-feedback-tray');
+      if (!tray) return;
+      tray.classList.remove('translate-y-0');
+      tray.classList.add('translate-y-full');
+      setTimeout(() => {
+        if (!duoTrayActive) tray.classList.add('hidden');
+      }, 200);
+    }
+
+    function continueQuizFlow() {
+      hideDuoTray();
+      if (typeof duoTrayCallback === 'function') {
+        const cb = duoTrayCallback;
+        duoTrayCallback = null;
+        setTimeout(cb, 220);
+      }
+    }
+
+    // Keyboard support: Escape closes modals, Enter advances Duo tray
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         closeLangModal();
         closePhonemicModal();
       }
+      if (e.key === 'Enter' && duoTrayActive) {
+        continueQuizFlow();
+      }
     });
+
+    // Auto-initialize HUD on load
+    loadQuizState();
+    updateQuizHUD();
   </script>
+
+  <!-- Duolingo-style Fixed Slide-Up Bottom Feedback Tray -->
+  <div id="duo-feedback-tray" class="fixed bottom-0 left-0 right-0 z-50 transform translate-y-full motion-safe:transition-transform motion-safe:duration-200 motion-safe:ease-out motion-reduce:transition-none border-t shadow-2xl p-4 sm:p-5 hidden">
+    <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+      <div id="duo-feedback-content" class="flex items-center gap-3 min-w-0">
+        <!-- Injected icon, praise/correction, and details -->
+      </div>
+      <button id="duo-continue-btn" onclick="continueQuizFlow()" class="btn-3d-matcha px-6 py-2.5 rounded-xl font-bold text-xs sm:text-sm tracking-wide flex items-center justify-center gap-2 w-full sm:w-auto shadow-md">
+        <span>Nadaljuj</span>
+        <i class="fa-solid fa-arrow-right text-xs"></i>
+      </button>
+    </div>
+  </div>
 </body>
 </html>

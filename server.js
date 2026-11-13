@@ -959,6 +959,64 @@ app.post('/api/quiz/check', (req, res) => {
   res.json(bestResult || { status: 'wrong', chars: [] });
 });
 
+// Practice / Quiz Pool endpoint: returns dictionary entries formatted with dual forms and translations
+app.get('/api/quiz/pool', (req, res) => {
+  const userLang = (req.query.lang || 'en').toLowerCase();
+  const rawEntries = getDictionaryEntries();
+  const pool = [];
+
+  for (const entry of rawEntries) {
+    if (!entry || !entry.slWord) continue;
+    const sl = entry.slWord;
+
+    let dual = '';
+    let plural = '';
+    let category = 'noun';
+
+    if (irregularDictionary[sl.toLowerCase()]) {
+      const irr = irregularDictionary[sl.toLowerCase()];
+      dual = irr.dvojina_prikaz || `dva ${irr.tabela.imenovalnik.dvojina}`;
+      plural = irr.mnozina_prikaz || `trije ${irr.tabela.imenovalnik.mnozina}`;
+    } else if (isVerbInfinitive(sl)) {
+      category = 'verb';
+      try {
+        const conj = conjugateVerb(sl, userLang);
+        if (conj && conj.dualSummary) {
+          dual = conj.dualSummary.sedanjik?.dva || conj.dualSummary.sedanjik?.midva || '';
+        }
+      } catch (e) {}
+    } else {
+      const decl = generateRegularDeclension(sl);
+      if (decl) {
+        dual = decl.dvojina_prikaz;
+        plural = decl.mnozina_prikaz;
+      }
+    }
+
+    if (!dual) continue;
+
+    let translation = '';
+    if (entry.translations) {
+      translation = entry.translations[userLang] || entry.translations['en'] || entry.translations['sr'] || '';
+    }
+
+    pool.push({
+      id: sl.toLowerCase(),
+      slWord: sl,
+      accent: entry.accent || sl,
+      spol: entry.spol || (category === 'verb' ? 'Glagol' : 'Samostalnik'),
+      category,
+      dual,
+      plural,
+      translation,
+      translations: entry.translations || {},
+      irregular: !!entry.irregular
+    });
+  }
+
+  res.json({ count: pool.length, pool });
+});
+
 let server = null;
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
   server = app.listen(PORT, () => {

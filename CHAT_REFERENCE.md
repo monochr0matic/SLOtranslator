@@ -135,7 +135,33 @@ The test suite in [`test/e2e.test.js`](file:///E:/antigravity/Translator%20app/t
 
 ---
 
-## 7. Instructions for Any Future AI Agent
+---
+
+## 8. Front-End Redesign (Hallmark Dusk + Sadō Waza Theme & Dedicated Quiz Hub)
+
+In November 2026, the front-end was upgraded using the **Hallmark** design standard, adopting the **Dusk** structure with the **Sadō Waza** (茶道) Japanese tea-ceremony palette:
+- **Design Tokens & Fonts:** `Wix Madefor Display` (500) and `Wix Madefor Text` (400/500). Matcha forest green (`#2f855a` / `#1c5236`), dark slate tea-house base (`#121316` / `#121215`), washi/bone wells (`#fafafa`), and roasted hojicha apricot accents (`#d97706`).
+- **Tactile 3D Buttons:** Duolingo / Feather-inspired tactile pressable buttons (`btn-3d-matcha`, `btn-3d-neutral`) with physical click translation and drop shadows.
+- **Animated Dragon Mascot (`/mascot.jpg`):**
+  - Organic 3-second breathing float (`.mascot-idle`)
+  - Celebratory hop/sparkle bounce on streaks and correct answers (`.mascot-celebrate`)
+  - Supportive head wobble on mistakes (`.mascot-wobble`)
+  - Full `prefers-reduced-motion: reduce` fallback support.
+- **Three-Tab Architecture:**
+  1. **🔍 Slovar & Dvojina (Explorer):** The full dual generator, noun declensions, verb conjugations, phonemic IPA, and natural voice TTS audio.
+  2. **🎮 Vaje & Kviz (Practice & Minigames):**
+     - **Adaptive Learner Progress:** Stored in `localStorage` (`dvojcek_quiz_state_v1`), tracking mastery levels (0 to 3 stars), error queues, streaks (`🔥`), and XP (`⚡`).
+     - **Na pari (Matching Pairs):** 10 interactive tiles (5 Slovenian words/duals ↔ 5 translations). Tapping matches clears tiles with checkmarks; mismatches trigger haptic shakes. Strictly zero unwanted audio.
+     - **Dvojina izziv (Dual Challenge):** Fill-in-the-blank dual prompt with diacritic caron tolerance.
+     - **Hitri izbor (Multiple Choice):** 4 tactile 3D cards with 1 correct form and 3 distractors.
+     - **Duolingo-Style Fixed Bottom Tray:** Fixed slide-up action bar (`#duo-feedback-tray`) with green celebratory banner for correct answers, amber banner for diacritics, and red banner with corrections for errors. Keyboard support (`Enter` advances).
+  3. **🗺️ Učna pot (Learning Path):** Serpentine stepping-stone path previewing Units 1–4, prepared for future Slovenian grammar book integration.
+- **Backend API:** Added `GET /api/quiz/pool?lang=...` in `server.js` to serve structured dual pairs and translations across all verified dictionary entries.
+- **Linter & Verification:** Passed `sloplint.mjs` with 0 FAILs, and all 25 automated tests in `npm test` (`test/e2e.test.js`) pass with 100% success.
+
+---
+
+## 9. Instructions for Any Future AI Agent
 
 1. **Do Not Introduce AI API Calls into the Runtime:** All word lookups, declensions, and conjugations must remain local/deterministic or use standard HTTP scraping/translation APIs.
 2. **Preserve Latin Script for Serbian:** Serbian translations must always run through `toLatin()` (never raw Cyrillic).
